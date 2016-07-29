@@ -7,6 +7,14 @@
     <groupId>kongge</groupId>
     <artifactId>shitou</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <java.encoding>UTF-8</java.encoding>
+        <java.version>1.7</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.version>3.2.13.RELEASE</spring.version>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <!-- spring 3依赖 -->
@@ -324,5 +332,65 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>pre</id>
+            <properties>
+                <buildconfig>resource.pre.properties</buildconfig>
+            </properties>
+        </profile>
+        <profile>
+            <id>real</id>
+            <properties>
+                <buildconfig>resource.real.properties</buildconfig>
+            </properties>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <buildconfig>resource.dev.properties</buildconfig>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+
+    <build>
+        <!--插件列表 -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${java.encoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
